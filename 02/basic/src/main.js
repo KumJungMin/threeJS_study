@@ -11,28 +11,16 @@ const scene = new THREE.Scene();
 
 // 4. 카메라 만들기
 // PerspectiveCamera(시야각, 가로세율비율, near, far) => near < 보이는범위(+시야각내부인경우) < far
-// const camera = new THREE.PerspectiveCamera(
-//   75, // 시아갹
-//   window.innerWidth / window.innerHeight, // 종횡비(aspect)
-//   0.1, // near
-//   1000 // far
-// );
-
-// OrthographicCamera(직교 카메라)
-const camera = new THREE.OrthographicCamera(
-  -(window.innerWidth / window.innerHeight), //left
-  window.innerWidth / window.innerHeight, //right
-  1, //top
-  -1, //bottom
-  0.1, //near,
+const camera = new THREE.PerspectiveCamera(
+  75, // 시아갹
+  window.innerWidth / window.innerHeight, // 종횡비(aspect)
+  0.1, // near
   1000 // far
 );
+
 camera.position.x = 1;
 camera.position.y = 2;
 camera.position.z = 5;
-camera.lookAt(0, 0, 0); // 카메라가 특정 x,y,z를 바라보도록 만듬
-camera.zoom = 0.5; // 기본값은 1
-camera.updateProjectionMatrix(); // 카메라 설정(zoom) 후 updateProjectionMatrix 해야함
 scene.add(camera); // camera를 scene에 추가
 
 // 5. mesh(물체) 만들기
