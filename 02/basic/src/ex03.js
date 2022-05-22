@@ -13,7 +13,10 @@ export default function example() {
   renderer.setClearColor(0x00ff00); // 배경색 지정
   renderer.setClearAlpha(0.5); // 투명도 조절 - 0 ~ 1사이의 값
 
+  // scene
+  // render에 scene이 올라가는 형태이므로 scene에 지정한 색상이 render에서 설정한 색상보다 우선순위가 높음
   const scene = new THREE.Scene();
+  scene.background = new THREE.Color("blue"); //scene에 색상지정시 THREE.Color를 사용해야함
 
   // camera
   const camera = new THREE.PerspectiveCamera(
