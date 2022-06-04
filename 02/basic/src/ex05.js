@@ -25,8 +25,6 @@ export default function example() {
     1000 // far
   );
 
-  camera.position.x = 1;
-  camera.position.y = 2;
   camera.position.z = 5;
   scene.add(camera);
 
@@ -44,7 +42,22 @@ export default function example() {
   scene.add(mesh);
 
   // 그리기
-  renderer.render(scene, camera);
+  // mesh 회전시키기
+  // requestAnimationFrame 애니메이션 설정
+  function draw() {
+    // degree가 아닌 radian 값을 사용하는 방법
+    // mesh.rotation.y += 0.1;
+    // degree -> redian으로 변환 -> degToRad(1)이라고 하면 1 degree를 말하는 것
+    mesh.rotation.y += THREE.MathUtils.degToRad(2);
+    mesh.position.y += 0.01;
+    if (mesh.position.y > 3) mesh.position.y -= 0.01;
+    renderer.render(scene, camera);
+
+    // 애니메이션 실행 -> 재귀함수형태로 진행
+    // requestAnimationFrame == setAnimationLoop
+    // requestAnimationFrame(draw);
+    renderer.setAnimationLoop(draw); // AR, VR할 때는 이걸 써야함
+  }
 
   function setSize() {
     camera.aspect = window.innerWidth / window.innerHeight;
@@ -55,4 +68,6 @@ export default function example() {
 
   // 이벤트
   window.addEventListener("resize", setSize);
+
+  draw();
 }
