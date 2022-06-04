@@ -46,12 +46,11 @@ export default function example() {
   // 그리기
   const clock = new THREE.Clock();
   function draw() {
-    // clock.getElapsedTime: 절대 경과 시간
-    // 컴퓨터 성능이 bad -> draw()가 실행되는 경과시간의 간격이 넓음 -> 이 간격으로 천천히 동작시킴 -> 성능 조정
-    // 같은 시간동안 같은 속도로 움직임(대신 성능이 안보이면 뜩뜩 끊기듯이 움직일 수 있음)
-    const time = clock.getElapsedTime();
-    mesh.rotation.y = time * 2;
-    mesh.position.y += 0.01;
+    // 단, getDelta(간격값), getElapsedTime(증가하는값)은 동시에 쓰지 말것 -> 꼬임
+    // clock.getDelta: draw()의 실행 시간차(증가값이 아님)
+    const time = clock.getDelta();
+    mesh.rotation.y += time;
+    mesh.position.y += time;
     if (mesh.position.y > 3) mesh.position.y = 0;
     renderer.render(scene, camera);
 
