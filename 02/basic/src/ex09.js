@@ -7,16 +7,15 @@ export default function example() {
   const renderer = new THREE.WebGL1Renderer({
     canvas,
     antialias: true,
-    alpha: true, // 배경색 투명하게
   });
   renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0x00ff00); // 배경색 지정
-  renderer.setClearAlpha(0.5); // 투명도 조절 - 0 ~ 1사이의 값
 
   // scene
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color("blue"); //scene에 색상지정시 THREE.Color를 사용해야함
+
+  // fog(색상, near, far) -> 그라데이션을 줄 수도 있으며 원근감을 줄 수 있음
+  scene.fog = new THREE.Fog("black", 3, 7);
 
   // camera
   const camera = new THREE.PerspectiveCamera(
@@ -26,12 +25,14 @@ export default function example() {
     1000 // far
   );
 
+  camera.position.y = 1;
   camera.position.z = 5;
   scene.add(camera);
 
   const light = new THREE.DirectionalLight(0xffffff, 1); // 색상, 빛의 강도
   light.position.x = 1;
-  light.position.z = 2;
+  light.position.y = 3;
+  light.position.z = 5;
   scene.add(light);
 
   // mesh
@@ -39,8 +40,16 @@ export default function example() {
   const meterial = new THREE.MeshStandardMaterial({
     color: "red",
   });
-  const mesh = new THREE.Mesh(geometry, meterial);
-  scene.add(mesh);
+
+  const meshes = [];
+  let mesh;
+  for (let i = 0; i < 10; i++) {
+    mesh = new THREE.Mesh(geometry, meterial);
+    mesh.position.x = Math.random() * 5 - 2.5;
+    mesh.position.y = Math.random() * 5 - 2.5;
+    scene.add(mesh);
+    meshes.push(mesh);
+  }
 
   // 그리기
   let prevTime = Date.now();
@@ -48,9 +57,10 @@ export default function example() {
     const currTime = Date.now();
     const deltaTime = currTime - prevTime;
     prevTime = currTime;
-    mesh.rotation.y += deltaTime * 0.003;
-    mesh.position.y += deltaTime * 0.0004;
-    if (mesh.position.y > 3) mesh.position.y = 0;
+
+    meshes.forEach((item) => {
+      item.rotation.y += deltaTime * 0.001;
+    });
     renderer.render(scene, camera);
 
     // 애니메이션 실행
