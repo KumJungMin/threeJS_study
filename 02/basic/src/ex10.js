@@ -1,6 +1,7 @@
-// 주제: 안개
+// 주제: 애니메이션 라이브러리 써보기
 
 import * as THREE from "three";
+import gasp from "gsap"; // greensock 애니메이션 라이브러리
 
 export default function example() {
   const canvas = document.querySelector("#three-canvas");
@@ -41,15 +42,8 @@ export default function example() {
     color: "red",
   });
 
-  const meshes = [];
-  let mesh;
-  for (let i = 0; i < 10; i++) {
-    mesh = new THREE.Mesh(geometry, meterial);
-    mesh.position.x = Math.random() * 5 - 2.5;
-    mesh.position.y = Math.random() * 5 - 2.5;
-    scene.add(mesh);
-    meshes.push(mesh);
-  }
+  const mesh = new THREE.Mesh(geometry, meterial);
+  scene.add(mesh);
 
   // 그리기
   let prevTime = Date.now();
@@ -58,14 +52,21 @@ export default function example() {
     const deltaTime = currTime - prevTime;
     prevTime = currTime;
 
-    meshes.forEach((item) => {
-      item.rotation.y += deltaTime * 0.001;
-    });
     renderer.render(scene, camera);
 
     // 애니메이션 실행
     renderer.setAnimationLoop(draw);
   }
+
+  // gasp 사용
+  gasp.to(
+    mesh.position, // 변화를 줄 js object
+    // 바꿀 속성, 값
+    {
+      duration: 1, // 지속시간
+      y: 2, // 바꿀 속성: 값
+    }
+  );
 
   function setSize() {
     camera.aspect = window.innerWidth / window.innerHeight;
