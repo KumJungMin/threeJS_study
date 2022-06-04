@@ -44,13 +44,14 @@ export default function example() {
   scene.add(mesh);
 
   // 그리기
-  const clock = new THREE.Clock();
+  // js의 Date.noe()로 애니메이션 조정하는 법
+  let prevTime = Date.now();
   function draw() {
-    // 단, getDelta(간격값), getElapsedTime(증가하는값)은 동시에 쓰지 말것 -> 꼬임
-    // clock.getDelta: draw()의 실행 시간차(증가값이 아님)
-    const time = clock.getDelta();
-    mesh.rotation.y += time;
-    mesh.position.y += time;
+    const currTime = Date.now();
+    const deltaTime = currTime - prevTime; // 시간차 구하기
+    prevTime = currTime;
+    mesh.rotation.y += deltaTime * 0.003;
+    mesh.position.y += deltaTime * 0.0004;
     if (mesh.position.y > 3) mesh.position.y = 0;
     renderer.render(scene, camera);
 
