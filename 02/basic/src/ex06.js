@@ -1,4 +1,6 @@
 // 주제: 애니메이션 처리 + 성능 보정
+// 애니메이션을 컴퓨터 성능별로 보정해보자!
+
 import * as THREE from "three";
 
 export default function example() {
@@ -42,10 +44,15 @@ export default function example() {
   scene.add(mesh);
 
   // 그리기
+  const clock = new THREE.Clock();
   function draw() {
-    mesh.rotation.y += THREE.MathUtils.degToRad(2);
+    // clock.getElapsedTime: 절대 경과 시간
+    // 컴퓨터 성능이 bad -> draw()가 실행되는 경과시간의 간격이 넓음 -> 이 간격으로 천천히 동작시킴 -> 성능 조정
+    // 같은 시간동안 같은 속도로 움직임(대신 성능이 안보이면 뜩뜩 끊기듯이 움직일 수 있음)
+    const time = clock.getElapsedTime();
+    mesh.rotation.y = time * 2;
     mesh.position.y += 0.01;
-    if (mesh.position.y > 3) mesh.position.y -= 0.01;
+    if (mesh.position.y > 3) mesh.position.y = 0;
     renderer.render(scene, camera);
 
     // 애니메이션 실행
