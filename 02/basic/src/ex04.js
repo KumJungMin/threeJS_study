@@ -31,9 +31,18 @@ export default function example() {
   camera.position.z = 5;
   scene.add(camera);
 
+  // light(조명)
+  // DirectionalLight 태양빛과 유사
+  // 조명은 여러개를 scene에 추가할 수 있으나 성능에는 좋지 않음
+  const light = new THREE.DirectionalLight(0xffffff, 1); // 색상, 빛의 강도
+  light.position.x = 1;
+  light.position.z = 2;
+  scene.add(light);
+
   // mesh
   const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const meterial = new THREE.MeshBasicMaterial({
+  // MeshBasicMaterial는 빛에 영향을 받지 않는 메쉬임
+  const meterial = new THREE.MeshStandardMaterial({
     color: "red",
   });
   const mesh = new THREE.Mesh(geometry, meterial);
