@@ -43,8 +43,11 @@ export default function example() {
     color: "seagreen",
   });
   const mesh = new THREE.Mesh(geometry, material);
-  mesh.position.x = 2;
   scene.add(mesh);
+
+  // Stats
+  const stats = new Stats();
+  document.body.append(stats.domElement);
 
   // 그리기
   const clock = new THREE.Clock();
@@ -52,6 +55,8 @@ export default function example() {
   function draw() {
     const time = clock.getElapsedTime();
 
+    // draw하는 곳에서 update해야 fps를 볼 수 있음 -> 성능 체크 가능
+    stats.update();
     mesh.rotation.y = time;
 
     renderer.render(scene, camera);
