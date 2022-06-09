@@ -1,6 +1,8 @@
 import * as THREE from "three";
+import Stats from "stats.js";
 
-// ----- 주제: 초당 프레임(FPS) 체크하기
+// ----- 주제: 초당 프레임(FPS) 체크하기(Stats)
+// Stats는 three.js에 존재하는 기능이 아니므로 별도 설치해야함
 
 export default function example() {
   // Renderer
@@ -22,18 +24,9 @@ export default function example() {
     0.1,
     1000
   );
-  camera.position.x = 1;
-  camera.position.y = 3;
-  camera.position.z = 0;
+  camera.position.y = 1;
+  camera.position.z = 5;
   scene.add(camera);
-
-  // AxesHelper: 축을 보여줌
-  const axesHelper = new THREE.AxesHelper(3); // 사이즈
-  scene.add(axesHelper);
-
-  // GridHelper: 그리드를 보여줌
-  const gridHelper = new THREE.GridHelper(5); // 사이즈
-  scene.add(gridHelper);
 
   // Light
   // AmbientLight: 전체적으로 조명을 은은하게 적용
@@ -52,8 +45,6 @@ export default function example() {
   const mesh = new THREE.Mesh(geometry, material);
   mesh.position.x = 2;
   scene.add(mesh);
-
-  camera.lookAt(mesh.position); // 카메라가 대상의 위치를 바라보도록 함
 
   // 그리기
   const clock = new THREE.Clock();
