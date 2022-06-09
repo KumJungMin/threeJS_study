@@ -51,8 +51,11 @@ export default function example() {
   // add(객체, 속성, 시작, 끝범위, 간격)
   // 방법1
   // gui.add(mesh.position, "y", -5, 5, 0.01).name("메쉬의 z 위치"");
+  gui.add(camera.position, "x", -10, 10, 0.01).name("카메라의 x 위치");
   // 방법2
   gui.add(mesh.position, "y").min(-10).max(3).step(0.01).name("메쉬의 z 위치");
+
+  camera.lookAt(mesh.position);
 
   // 그리기
   const clock = new THREE.Clock();
@@ -61,6 +64,8 @@ export default function example() {
     const time = clock.getElapsedTime();
 
     mesh.rotation.y = time;
+    // draw할 때도 추가해줘야 gui로 이동시켜도 카메라가 대상을 바라봄
+    camera.lookAt(mesh.position);
 
     renderer.render(scene, camera);
     renderer.setAnimationLoop(draw);
