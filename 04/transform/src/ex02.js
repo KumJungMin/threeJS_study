@@ -60,6 +60,9 @@ export default function example() {
   function draw() {
     const delta = clock.getDelta();
 
+    // 크기 관련 함수
+    mesh.scale.x = 2; // x축 방향으로 2배 증가
+    // mesh.scale.set(2,0,0);
     renderer.render(scene, camera);
     renderer.setAnimationLoop(draw);
   }
