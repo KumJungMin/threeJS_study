@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import dat from "dat.gui";
 
 // ----- 주제: GUI 컨트롤 사용해보기
 // gui로 간편하게 객체 위치, 카메라 위치 변경해보기
@@ -43,6 +44,15 @@ export default function example() {
   });
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
+
+  // Dat GUI
+  const gui = new dat.GUI();
+  // ui로 조정하고 싶은 객체를 추가하면 됨
+  // add(객체, 속성, 시작, 끝범위, 간격)
+  // 방법1
+  // gui.add(mesh.position, "y", -5, 5, 0.01).name("메쉬의 z 위치"");
+  // 방법2
+  gui.add(mesh.position, "y").min(-10).max(3).step(0.01).name("메쉬의 z 위치");
 
   // 그리기
   const clock = new THREE.Clock();
