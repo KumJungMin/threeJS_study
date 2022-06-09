@@ -57,8 +57,20 @@ export default function example() {
   // 그리기
   const clock = new THREE.Clock();
 
+  // 3. 2개의 축을 기준으로 회전시키기 -> reorder를 해야 회전축이 변함(reorder 주석 전 후 비교해보기)
+  mesh.rotation.reorder("YXZ");
+  mesh.rotation.y = THREE.MathUtils.degToRad(45);
+  mesh.rotation.x = THREE.MathUtils.degToRad(45);
+
   function draw() {
     const delta = clock.getDelta();
+
+    // 회전 관련 함수
+    // 1. x축 방향으로 45도로 회전
+    // mesh.rotation.x = THREE.MathUtils.degToRad(45);
+
+    // 2. x축 방향으로 계속 회전하는 애니메이션
+    // mesh.rotation.x += delta;
 
     renderer.render(scene, camera);
     renderer.setAnimationLoop(draw);
