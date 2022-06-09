@@ -2,6 +2,9 @@ import * as THREE from "three";
 import dat from "dat.gui";
 
 // ----- 주제: 그룹 만들기(Scene Graph)
+// 그룹핑을 하면 그룹의 위치를 이동시킬 때 같이 움직임!
+// 로봇의 팔, 몸 객체를 그룹핑하면 이동시킬 때 같이 움직임
+// => 태양, 달, 지구 예시로 그룹핑 살펴보기
 
 export default function example() {
   // Renderer
@@ -41,8 +44,25 @@ export default function example() {
   const material = new THREE.MeshStandardMaterial({
     color: "seagreen",
   });
-  const mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
+  const group1 = new THREE.Group();
+  const box1 = new THREE.Mesh(geometry, material);
+
+  // 그룹핑하기
+  const group2 = new THREE.Group();
+  // const box2 = new THREE.Mesh(geometry, material);
+  const box2 = box1.clone(); // clone으로 geometry, material형태 복사가능
+  box2.scale.set(0.3, 0.3, 0.3);
+  group2.position.x = 2;
+
+  const group3 = new THREE.Group();
+  const box3 = box2.clone();
+  box3.scale.set(0.15, 0.15, 0.15);
+  group3.position.x = 0.5;
+
+  group3.add(box3);
+  group2.add(box2, group3);
+  group1.add(box1, group2);
+  scene.add(group1);
 
   // AxesHelper
   const axesHelper = new THREE.AxesHelper(3);
@@ -59,6 +79,10 @@ export default function example() {
 
   function draw() {
     const delta = clock.getDelta();
+
+    group1.rotation.y += delta;
+    group2.rotation.y += delta;
+    group3.rotation.y += delta;
 
     renderer.render(scene, camera);
     renderer.setAnimationLoop(draw);
